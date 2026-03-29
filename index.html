@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProMoto GP Association</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts (Similar to F1 style) -->
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,400;0,600;0,700;0,900;1,400&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: '#e10600', // Racing Red
+                        dark: '#15151e',
+                    },
+                    fontFamily: {
+                        sans: ['"Titillium Web"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #f4f4f5; }
+        .hero-bg {
+            background-image: linear-gradient(rgba(21, 21, 30, 0.7), rgba(21, 21, 30, 0.9)), url('https://images.unsplash.com/photo-1558981403-c5f9899a28bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+        .clip-slant { clip-path: polygon(0 0, 100% 0, 95% 100%, 0% 100%); }
+        .nav-link { cursor: pointer; transition: color 0.2s; }
+        .nav-link:hover { color: #e10600; }
+        .card-hover { transition: transform 0.2s, box-shadow 0.2s; }
+        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen font-sans text-gray-800">
+
+    <!-- Navigation -->
+    <header class="bg-dark text-white sticky top-0 z-50 border-b-4 border-brand">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="text-2xl font-black italic tracking-wider cursor-pointer flex items-center gap-2" onclick="navigate('home')">
+                <i class="fa-solid fa-motorcycle text-brand"></i> ProMoto GP
+            </div>
+            
+            <!-- Desktop Nav -->
+            <nav class="hidden md:flex gap-6 font-bold uppercase tracking-wide text-sm">
+                <a onclick="navigate('home')" class="nav-link">Home</a>
+                <a onclick="navigate('teams')" class="nav-link">Teams</a>
+                <a onclick="navigate('schedule')" class="nav-link">Schedule</a>
+                <a onclick="navigate('results')" class="nav-link">Results</a>
+                <a onclick="navigate('news')" class="nav-link">News</a>
+            </nav>
+
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden text-white focus:outline-none" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+                <i class="fa-solid fa-bars text-2xl"></i>
+            </button>
+        </div>
+        <!-- Mobile Nav -->
+        <div id="mobile-menu" class="hidden bg-gray-900 md:hidden pb-4 px-4 flex-col gap-3 font-bold uppercase text-sm">
+            <a onclick="navigate('home'); document.getElementById('mobile-menu').classList.add('hidden')" class="block py-2 nav-link">Home</a>
+            <a onclick="navigate('teams'); document.getElementById('mobile-menu').classList.add('hidden')" class="block py-2 nav-link">Teams</a>
+            <a onclick="navigate('schedule'); document.getElementById('mobile-menu').classList.add('hidden')" class="block py-2 nav-link">Schedule</a>
+            <a onclick="navigate('results'); document.getElementById('mobile-menu').classList.add('hidden')" class="block py-2 nav-link">Results</a>
+            <a onclick="navigate('news'); document.getElementById('mobile-menu').classList.add('hidden')" class="block py-2 nav-link">News</a>
+        </div>
+    </header>
+
+    <!-- Dynamic Content Canvas -->
+    <main id="app" class="flex-grow">
+        <!-- Views injected here by JS -->
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white pt-12 pb-6 border-t-4 border-brand mt-auto">
+        <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+                <h3 class="text-xl font-black italic tracking-wider mb-4"><i class="fa-solid fa-motorcycle text-brand"></i> ProMoto GP</h3>
+                <p class="text-gray-400 text-sm">The pinnacle of professional motorcycle racing. Thrills, speed, and adrenaline on two wheels.</p>
+            </div>
+            <div>
+                <h4 class="font-bold uppercase tracking-wide mb-4 border-b border-gray-700 pb-2">Quick Links</h4>
+                <div class="grid grid-cols-2 gap-2 text-sm text-gray-400">
+                    <a onclick="navigate('teams')" class="hover:text-white cursor-pointer">Teams & Riders</a>
+                    <a onclick="navigate('schedule')" class="hover:text-white cursor-pointer">Race Calendar</a>
+                    <a onclick="navigate('results')" class="hover:text-white cursor-pointer">Standings</a>
+                    <a onclick="navigate('news')" class="hover:text-white cursor-pointer">Latest News</a>
+                </div>
+            </div>
+            <div>
+                <h4 class="font-bold uppercase tracking-wide mb-4 border-b border-gray-700 pb-2">Newsletter</h4>
+                <form class="flex" onsubmit="event.preventDefault(); alert('Subscribed!');">
+                    <input type="email" placeholder="Email address" class="w-full px-3 py-2 bg-gray-800 text-white focus:outline-none focus:ring-1 focus:ring-brand" required>
+                    <button type="submit" class="bg-brand hover:bg-red-700 px-4 py-2 font-bold transition">JOIN</button>
+                </form>
+                <div class="mt-6 flex gap-4 text-xl">
+                    <a href="#" class="hover:text-brand transition"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" class="hover:text-brand transition"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="https://www.instagram.com/promoto.gp/" class="hover:text-brand transition"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="hover:text-brand transition"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="text-center text-gray-600 text-xs mt-12">
+            &copy; <span id="year"></span> ProMoto GP Association. All rights reserved. Built dynamically.
+        </div>
+    </footer>
+
+    <!-- APPLICATION LOGIC & DATABASE -->
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // ==========================================
+        // 1. THE DATABASE (JSON / Configurable Data)
+        // Edit these arrays to update the entire site instantly.
+        // ==========================================
+        const db = {
+            teams:[
+                { id: 't1', name: 'RedLine Racing Factory - YAMAHA', logo: '1.png', points: 615, podiums: 10, races: 325, bike: 'Yamaha YZF-R1', color: 'border-red-600' },
+                { id: 't2', name: 'Yamato Blue GP - DUCATI', logo: '2.png', points: 595, podiums: 6, races: 325, bike: 'Ducati Panigale V4 R', color: 'border-blue-600' },
+                { id: 't3', name: 'Stealth Apex Motorsport - HONDA', logo: '3.png', points: 530, podiums: 5, races: 325, bike: 'Honda CBR1000RR-R Fireblade SP', color: 'border-green-500' },
+                { id: 't4', name: 'Velocity Riders - BMW', logo: '4.png', points: 625, podiums: 9, races: 325, bike: 'BMW M 1000 RR', color: 'border-yellow-500' },
+                { id: 't5', name: 'Pinnacle MotorSports - SUZUKI', logo: '5.png', points: 560, podiums: 5, races: 325, bike: 'Suzuki GSX-R1000R', color: 'border-blue-600' },
+                { id: 't6', name: 'Apex Racing - APRILIA', logo: '6.png', points: 535, podiums: 4, races: 325, bike: 'Aprilia RSV4 RF', color: 'border-yellow-500' }
+            ],
+            riders:[
+                { id: 'r1', teamId: 't1', name: 'Udit Goswami', number: 93, points: 310, wins: 5, podiums: 8, fastestLaps: 4, country: 'ASSAM', image: 'i.png' },
+                { id: 'r2', teamId: 't1', name: 'Manish Paul', number: 12, points: 305, wins: 5, podiums: 7, fastestLaps: 5, country: 'GUJARAT', image: 'ii.png' },
+                { id: 'r3', teamId: 't2', name: 'Ansh Chauhan', number: 20, points: 315, wins: 4, podiums: 7, fastestLaps: 3, country: 'TELANGANA', image: 'iii.png' },
+                { id: 'r4', teamId: 't2', name: 'Karan Singh', number: 55, points: 280, wins: 2, podiums: 4, fastestLaps: 0, country: 'DELHI', image: 'iv.png' },
+                { id: 'r5', teamId: 't3', name: 'Rahul Kapoor', number: 43, points: 290, wins: 2, podiums: 3, fastestLaps: 4, country: 'MUMBAI', image: 'v.png' },
+                { id: 'r6', teamId: 't3', name: 'Vivan Malhotra', number: 42, points: 240, wins: 3, podiums: 2, fastestLaps: 5, country: 'MUMBAI', image: 'vi.png' },
+                { id: 'r7', teamId: 't4', name: 'Arnav Joshi', number: 68, points: 325, wins: 5, podiums: 4, fastestLaps: 6, country: 'ASSAM', image: 'vii.png' },
+                { id: 'r8', teamId: 't4', name: 'Abhi Pandya', number: 21, points: 300, wins: 4, podiums: 3, fastestLaps: 3, country: 'GOA', image: 'viii.png' },
+                { id: 'r9', teamId: 't5', name: 'Yashraj Choudhary', number: 83, points: 285, wins: 3, podiums: 5, fastestLaps: 2, country: 'DELHI', image: 'ix.png' },
+                { id: 'r10', teamId: 't5', name: 'Sitij Desai', number: 70, points: 275, wins: 2, podiums: 3, fastestLaps: 0, country: 'DELHI', image: 'x.png' },
+                { id: 'r11', teamId: 't6', name: 'Abhinav Mehra', number: 39, points: 295, wins: 2, podiums: 6, fastestLaps: 1, country: 'ASSAM', image: 'xi.png' },
+                { id: 'r12', teamId: 't6', name: 'JACK HARNES', number: 59, points: 240, wins: 2, podiums: 7, fastestLaps: 2, country: 'AUSTRALIA', image: 'xii.png' },
+            ],
+            schedule:[
+                { id: 's1', name: 'Noida GRAND PRIX 1', date: '2026-03-27T18:00:00', track: 'Buddh International Circuit', country: 'INDIA', trackImg: 'track1.jfif', status: 'completed' },
+                { id: 's2', name: 'Chennai GRAND PRIX 2', date: '2026-04-10T14:00:00', track: 'Madras Circuit', country: 'INDIA', trackImg: 'track2.jfif', status: 'upcoming' },
+                { id: 's3', name: 'Combaitore GRAND PRIX 3', date: '2026-04-24T15:00:00', track: 'Kari Motor Speedway Circuit', country: 'INDIA', trackImg: 'track3.jfif', status: 'upcoming' },
+                { id: 's4', name: 'Combaitor GRAND PRIX 4', date: '2026-05-08T14:00:00', track: 'CoASTT Centre Circuit', country: 'INDIA', trackImg: 'track4.jfif', status: 'upcoming' },
+                { id: 's5', name: 'Chennai GRAND PRIX 5', date: '2026-05-23T14:00:00', track: 'Chennai City Circuit', country: 'INDIA', trackImg: 'track5.jfif', status: 'upcoming' },
+                { id: 's6', name: 'Hyderabad GRAND PRIX 6', date: '2026-07-03T14:00:00', track: 'Hyderabad Street Circuit', country: 'INDIA', trackImg: 'track6.jfif', status: 'upcoming' },
+                
+                { id: 's7', name: 'Noida GRAND PRIX 7', date: '2026-07-31T18:00:00', track: 'Buddh International Circuit', country: 'INDIA', trackImg: 'track7.jfif', status: 'upcoming' },
+                { id: 's8', name: 'Chennai GRAND PRIX 8', date: '2026-08-21T14:00:00', track: 'Madras Circuit', country: 'INDIA', trackImg: 'track8.jfif', status: 'upcoming' },
+                { id: 's9', name: 'Combaitore GRAND PRIX 9', date: '2026-10-02T15:00:00', track: 'Kari Motor Speedway Circuit', country: 'INDIA', trackImg: 'track9.jfif', status: 'upcoming' },
+                { id: 's10', name: 'Combaitor GRAND PRIX 10', date: '2026-10-08T14:00:00', track: 'CoASTT Centre Circuit', country: 'INDIA', trackImg: 'track10.jfif', status: 'upcoming' },
+                { id: 's11', name: 'Chennai GRAND PRIX 11', date: '2026-10-16T14:00:00', track: 'Chennai City Circuit', country: 'INDIA', trackImg: 'track11.jfif', status: 'upcoming' },
+                { id: 's12', name: 'Hyderabad GRAND PRIX 12', date: '2026-11-06T14:00:00', track: 'Hyderabad Street Circuit', country:'INDIA', trackImg: 'track12.jfif', status: 'upcoming' },
+            ],
+            results:[
+                { id:'res1', raceId:'s1', raceName:'Noida GRAND PRIX 1', winnerId:'r1', secondId:'r3', thirdId: 'r5', fastestLapId: 'r1', teamPoints: { 't1': 25, 't2': 20, 't3': 16 } },
+                { id: 'res2', raceId: 's2', raceName: 'Chennai GRAND PRIX 2', winnerId: 'r3', secondId: 'r1', thirdId: 'r4', fastestLapId: 'r3', teamPoints: { 't2': 25, 't1': 20, 't3': 16 } },
+            ],
+            news:[
+                { id: 'n1', title: 'Udit Goswami dominates in Noida', summary: 'The RedLine Factory Racing prodigy put on a masterclass at the Buddh International Circuit, leading from flag to flag.', image: 'i.png', date: 'Mar 29, 2026' },
+                { id: 'n2', title: 'Yamato Blue GP announces new aero package', summary: 'Ahead of the Chennai GP, Yamato reveals aggressive new winglets hoping to close the top speed gap.', image: 'https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=600&q=80', date: 'Mar 29, 2026' },
+                { id: 'n3', title: 'Stealth Apex aims for podium at COTA', summary: 'Rahul Kapoor feels confident that the technical layout of the Chennai City Circuit will suit the Honda CBR1000RR-R Fireblade SP.', image: 'track1.jfif', date: 'Mar 29, 2026' }
+            ]
+        };
+
+        // ==========================================
+        // 2. HELPER FUNCTIONS
+        // ==========================================
+        
+        // Find next race
+        const getNextRace = () => db.schedule.find(r => r.status === 'upcoming');
+        const getRider = (id) => db.riders.find(r => r.id === id);
+        const getTeam = (id) => db.teams.find(t => t.id === id);
+        
+        let countdownInterval;
+
+        // Countdown Timer Logic
+        function startCountdown(targetDateStr) {
+            clearInterval(countdownInterval);
+            const targetDate = new Date(targetDateStr).getTime();
+            
+            countdownInterval = setInterval(() => {
+                const now = new Date().getTime();
+                const distance = targetDate - now;
+                
+                const el = document.getElementById('countdown-display');
+                if (!el) return clearInterval(countdownInterval); // Stop if element is gone
+                
+                if (distance < 0) {
+                    el.innerHTML = "RACE HAS STARTED!";
+                    clearInterval(countdownInterval);
+                    return;
+                }
+                
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                document.getElementById('cd-days').innerText = String(days).padStart(2, '0');
+                document.getElementById('cd-hours').innerText = String(hours).padStart(2, '0');
+                document.getElementById('cd-mins').innerText = String(minutes).padStart(2, '0');
+                document.getElementById('cd-secs').innerText = String(seconds).padStart(2, '0');
+            }, 1000);
+        }
+
+        // ==========================================
+        // 3. RENDER VIEWS
+        // ==========================================
+        
+        const views = {
+            
+            home: () => {
+                const nextRace = getNextRace();
+                const topRiders = [...db.riders].sort((a,b) => b.points - a.points).slice(0, 3);
+                const topTeams =[...db.teams].sort((a,b) => b.points - a.points).slice(0, 3);
+
+                let html = `
+                    <!-- Hero Section -->
+                    <div class="hero-bg text-white py-24 px-4 relative overflow-hidden">
+                        <div class="container mx-auto relative z-10 flex flex-col md:flex-row items-center justify-between">
+                            <div class="mb-10 md:mb-0 max-w-2xl">
+                                <span class="bg-brand text-white px-3 py-1 font-bold tracking-widest text-sm uppercase rounded-sm clip-slant">Next Race</span>
+                                <h1 class="text-5xl md:text-7xl font-black mt-4 mb-2 uppercase italic">${nextRace.name}</h1>
+                                <p class="text-xl text-gray-300 font-semibold"><i class="fa-solid fa-location-dot text-brand"></i> ${nextRace.track}, ${nextRace.country}</p>
+                                
+                                <!-- Countdown -->
+                                <div id="countdown-display" class="flex gap-4 mt-8 font-mono">
+                                    <div class="bg-white/10 backdrop-blur-sm px-4 py-3 rounded text-center border border-white/20">
+                                        <div id="cd-days" class="text-4xl font-bold text-brand">00</div>
+                                        <div class="text-xs uppercase tracking-wider text-gray-400">Days</div>
+                                    </div>
+                                    <div class="bg-white/10 backdrop-blur-sm px-4 py-3 rounded text-center border border-white/20">
+                                        <div id="cd-hours" class="text-4xl font-bold">00</div>
+                                        <div class="text-xs uppercase tracking-wider text-gray-400">Hrs</div>
+                                    </div>
+                                    <div class="bg-white/10 backdrop-blur-sm px-4 py-3 rounded text-center border border-white/20">
+                                        <div id="cd-mins" class="text-4xl font-bold">00</div>
+                                        <div class="text-xs uppercase tracking-wider text-gray-400">Mins</div>
+                                    </div>
+                                    <div class="bg-white/10 backdrop-blur-sm px-4 py-3 rounded text-center border border-white/20">
+                                        <div id="cd-secs" class="text-4xl font-bold">00</div>
+                                        <div class="text-xs uppercase tracking-wider text-gray-400">Secs</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container mx-auto px-4 py-12">
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                            
+                            <!-- Standings Overview -->
+                            <div class="lg:col-span-1 bg-white p-6 rounded-lg shadow-sm border-t-4 border-dark">
+                                <h2 class="text-2xl font-black uppercase mb-6 border-b pb-2">Top Riders</h2>
+                                <div class="space-y-4">
+                                    ${topRiders.map((r, index) => `
+                                        <div class="flex items-center justify-between cursor-pointer hover:bg-gray-50 p-2 rounded transition" onclick="navigate('rider', '${r.id}')">
+                                            <div class="flex items-center gap-4">
+                                                <div class="text-2xl font-black text-gray-300 w-6">${index + 1}</div>
+                                                <div>
+                                                    <div class="font-bold text-lg">${r.name}</div>
+                                                    <div class="text-xs text-gray-500 uppercase">${getTeam(r.teamId).name}</div>
+                                                </div>
+                                            </div>
+                                            <div class="font-black text-xl text-brand">${r.points} <span class="text-xs text-gray-400">PTS</span></div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                                <button onclick="navigate('results')" class="w-full mt-6 bg-gray-100 hover:bg-gray-200 text-dark font-bold py-2 uppercase text-sm transition rounded">Full Standings <i class="fa-solid fa-chevron-right text-xs"></i></button>
+                            </div>
+
+                            <!-- News Carousel / Grid -->
+                            <div class="lg:col-span-2">
+                                <h2 class="text-2xl font-black uppercase mb-6 flex justify-between items-end border-b pb-2 border-dark">
+                                    Latest News
+                                    <a onclick="navigate('news')" class="text-sm text-brand cursor-pointer hover:underline normal-case">View All</a>
+                                </h2>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    ${db.news.slice(0,2).map(n => `
+                                        <div class="bg-white rounded-lg overflow-hidden shadow-sm card-hover cursor-pointer" onclick="navigate('news')">
+                                            <div class="h-48 bg-gray-200 relative">
+                                                <img src="${n.image}" class="w-full h-full object-cover">
+                                            </div>
+                                            <div class="p-5">
+                                                <div class="text-xs text-gray-500 mb-2 font-bold">${n.date}</div>
+                                                <h3 class="font-black text-xl leading-tight mb-2 hover:text-brand transition">${n.title}</h3>
+                                                <p class="text-gray-600 text-sm line-clamp-2">${n.summary}</p>
+                                            </div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                setTimeout(() => startCountdown(nextRace.date), 0);
+                return html;
+            },
+
+            teams: () => {
+                return `
+                    <div class="bg-dark text-white py-12 px-4 border-b-4 border-brand">
+                        <div class="container mx-auto">
+                            <h1 class="text-4xl font-black uppercase italic mb-2">Teams & Constructors</h1>
+                            <p class="text-gray-400">Select a team to view their roster and statistics.</p>
+                        </div>
+                    </div>
+                    <div class="container mx-auto px-4 py-12">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            ${db.teams.map(t => `
+                                <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover cursor-pointer border-t-8 ${t.color}" onclick="navigate('team', '${t.id}')">
+                                    <div class="p-6 flex flex-col items-center border-b bg-gray-50">
+                                        <img src="${t.logo}" class="h-24 w-24 object-cover rounded-full border-4 border-white shadow-sm mb-4">
+                                        <h2 class="text-2xl font-black text-center">${t.name}</h2>
+                                        <p class="text-sm font-bold text-gray-500 uppercase mt-1">Bike: ${t.bike}</p>
+                                    </div>
+                                    <div class="bg-white p-4 flex justify-between text-center">
+                                        <div>
+                                            <div class="text-2xl font-black text-brand">${t.points}</div>
+                                            <div class="text-xs text-gray-500 uppercase font-bold">Points</div>
+                                        </div>
+                                        <div>
+                                            <div class="text-2xl font-black text-dark">${t.podiums}</div>
+                                            <div class="text-xs text-gray-500 uppercase font-bold">Podiums</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            },
+
+            team: (teamId) => {
+                const team = getTeam(teamId);
+                const teamRiders = db.riders.filter(r => r.teamId === teamId);
+                
+                return `
+                    <div class="bg-dark text-white py-12 px-4 border-b-4 border-brand">
+                        <div class="container mx-auto flex items-center gap-6">
+                            <img src="${team.logo}" class="h-24 w-24 object-cover rounded bg-white p-1">
+                            <div>
+                                <h1 class="text-4xl font-black uppercase italic mb-2">${team.name}</h1>
+                                <div class="flex gap-6 text-sm font-bold text-gray-400">
+                                    <span><i class="fa-solid fa-motorcycle text-brand"></i> ${team.bike}</span>
+                                    <span><i class="fa-solid fa-trophy text-brand"></i> ${team.points} PTS</span>
+                                    <span><i class="fa-solid fa-flag-checkered text-brand"></i> ${team.races} Races</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container mx-auto px-4 py-12">
+                        <h2 class="text-2xl font-black uppercase mb-6 border-b border-dark pb-2">Current Riders</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            ${teamRiders.map(r => `
+                                <div class="bg-white rounded-lg shadow-sm flex overflow-hidden card-hover cursor-pointer border-l-4 ${team.color}" onclick="navigate('rider', '${r.id}')">
+                                    <div class="w-1/3 bg-gray-200">
+                                        <img src="${r.image}" class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="w-2/3 p-6 flex flex-col justify-center">
+                                        <div class="flex justify-between items-start">
+                                            <div>
+                                                <div class="text-sm font-bold text-gray-400 uppercase">${r.country}</div>
+                                                <h3 class="text-2xl font-black hover:text-brand transition">${r.name}</h3>
+                                            </div>
+                                            <div class="text-4xl font-black text-gray-200 italic">${r.number}</div>
+                                        </div>
+                                        <div class="mt-4 grid grid-cols-3 gap-2 border-t pt-4 text-center">
+                                            <div>
+                                                <div class="font-black text-xl text-brand">${r.points}</div>
+                                                <div class="text-[10px] uppercase text-gray-500 font-bold">Points</div>
+                                            </div>
+                                            <div>
+                                                <div class="font-black text-xl">${r.wins}</div>
+                                                <div class="text-[10px] uppercase text-gray-500 font-bold">Wins</div>
+                                            </div>
+                                            <div>
+                                                <div class="font-black text-xl">${r.podiums}</div>
+                                                <div class="text-[10px] uppercase text-gray-500 font-bold">Podiums</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <button onclick="navigate('teams')" class="mt-10 text-brand font-bold uppercase hover:underline"><i class="fa-solid fa-arrow-left"></i> Back to Teams</button>
+                    </div>
+                `;
+            },
+
+            rider: (riderId) => {
+                const r = getRider(riderId);
+                const team = getTeam(r.teamId);
+                
+                return `
+                    <div class="bg-white border-b-4 border-brand">
+                        <div class="container mx-auto px-4 py-12 flex flex-col md:flex-row items-center gap-10">
+                            <div class="w-64 h-64 rounded-full overflow-hidden border-8 ${team.color} shadow-lg shrink-0">
+                                <img src="${r.image}" class="w-full h-full object-cover">
+                            </div>
+                            <div class="flex-grow text-center md:text-left">
+                                <div class="text-brand font-black text-7xl italic mb-2 opacity-20 absolute -ml-4 -mt-6 z-0">${r.number}</div>
+                                <div class="relative z-10">
+                                    <h1 class="text-5xl font-black uppercase italic mb-2">${r.name}</h1>
+                                    <p class="text-xl font-bold text-gray-500 uppercase cursor-pointer hover:text-brand" onclick="navigate('team', '${team.id}')">${team.name}</p>
+                                </div>
+                                <div class="flex flex-wrap justify-center md:justify-start gap-4 mt-8 relative z-10">
+                                    <div class="bg-dark text-white px-6 py-4 rounded shadow-md text-center min-w-[120px]">
+                                        <div class="text-3xl font-black text-brand">${r.points}</div>
+                                        <div class="text-xs uppercase tracking-widest text-gray-400 mt-1">Points</div>
+                                    </div>
+                                    <div class="bg-white border border-gray-200 px-6 py-4 rounded shadow-sm text-center min-w-[120px]">
+                                        <div class="text-3xl font-black">${r.wins}</div>
+                                        <div class="text-xs uppercase tracking-widest text-gray-500 mt-1">Wins</div>
+                                    </div>
+                                    <div class="bg-white border border-gray-200 px-6 py-4 rounded shadow-sm text-center min-w-[120px]">
+                                        <div class="text-3xl font-black">${r.podiums}</div>
+                                        <div class="text-xs uppercase tracking-widest text-gray-500 mt-1">Podiums</div>
+                                    </div>
+                                    <div class="bg-white border border-gray-200 px-6 py-4 rounded shadow-sm text-center min-w-[120px]">
+                                        <div class="text-3xl font-black">${r.fastestLaps}</div>
+                                        <div class="text-xs uppercase tracking-widest text-gray-500 mt-1">Fastest Laps</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container mx-auto px-4 py-8">
+                         <button onclick="navigate('team', '${team.id}')" class="text-brand font-bold uppercase hover:underline"><i class="fa-solid fa-arrow-left"></i> Back to Team</button>
+                    </div>
+                `;
+            },
+
+            schedule: () => {
+                return `
+                    <div class="bg-dark text-white py-12 px-4 border-b-4 border-brand">
+                        <div class="container mx-auto">
+                            <h1 class="text-4xl font-black uppercase italic mb-2">2026 Race Calendar</h1>
+                            <p class="text-gray-400">The ultimate global tour. Upcoming and past race details.</p>
+                        </div>
+                    </div>
+                    <div class="container mx-auto px-4 py-12">
+                        <div class="space-y-6">
+                            ${db.schedule.map(s => {
+                                const raceDate = new Date(s.date);
+                                const isNext = s.status === 'upcoming';
+                                const borderClass = isNext ? 'border-l-8 border-brand shadow-lg scale-[1.01]' : 'border-l-4 border-gray-300 shadow-sm';
+                                const badge = isNext ? `<span class="bg-brand text-white text-xs font-bold uppercase px-2 py-1 rounded absolute top-4 right-4 animate-pulse">Next Race</span>` : '';
+                                
+                                return `
+                                <div class="bg-white rounded-r-lg p-6 relative flex flex-col md:flex-row items-center gap-6 ${borderClass}">
+                                    ${badge}
+                                    <div class="text-center md:w-48 shrink-0 border-b md:border-b-0 md:border-r border-gray-200 pb-4 md:pb-0 md:pr-4">
+                                        <div class="text-sm text-gray-500 font-bold uppercase">${raceDate.toLocaleString('default', { month: 'short' })}</div>
+                                        <div class="text-4xl font-black">${raceDate.getDate()}</div>
+                                        <div class="text-xs text-gray-400 font-bold uppercase">${s.country}</div>
+                                    </div>
+                                    <div class="flex-grow w-full">
+                                        <h3 class="text-2xl font-black italic uppercase">${s.name}</h3>
+                                        <p class="text-gray-600 font-semibold"><i class="fa-solid fa-road text-gray-400"></i> ${s.track}</p>
+                                    </div>
+                                    <div class="w-full md:w-64 h-24 bg-gray-100 rounded overflow-hidden shrink-0">
+                                        <img src="${s.trackImg}" class="w-full h-full object-cover opacity-80 hover:opacity-100 transition">
+                                    </div>
+                                </div>
+                            `}).join('')}
+                        </div>
+                    </div>
+                `;
+            },
+
+            results: () => {
+                const sortedRiders = [...db.riders].sort((a,b) => b.points - a.points);
+                
+                return `
+                    <div class="bg-dark text-white py-12 px-4 border-b-4 border-brand">
+                        <div class="container mx-auto">
+                            <h1 class="text-4xl font-black uppercase italic mb-2">Standings & Results</h1>
+                            <p class="text-gray-400">Current season rider standings and past race results.</p>
+                        </div>
+                    </div>
+                    <div class="container mx-auto px-4 py-12 grid grid-cols-1 lg:grid-cols-2 gap-12">
+                        
+                        <!-- Rider Standings -->
+                        <div>
+                            <h2 class="text-2xl font-black uppercase mb-6 border-b-2 border-dark pb-2">Rider Championship</h2>
+                            <div class="bg-white shadow-sm rounded overflow-hidden">
+                                <table class="w-full text-left border-collapse">
+                                    <thead>
+                                        <tr class="bg-gray-100 text-gray-500 text-xs uppercase tracking-wider">
+                                            <th class="p-4 font-bold">Pos</th>
+                                            <th class="p-4 font-bold">Rider</th>
+                                            <th class="p-4 font-bold hidden md:table-cell">Team</th>
+                                            <th class="p-4 font-bold text-right text-brand">Pts</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200">
+                                        ${sortedRiders.map((r, i) => `
+                                            <tr class="hover:bg-gray-50 transition cursor-pointer" onclick="navigate('rider', '${r.id}')">
+                                                <td class="p-4 font-black text-gray-400">${i+1}</td>
+                                                <td class="p-4 font-bold">${r.name}</td>
+                                                <td class="p-4 text-xs font-bold text-gray-500 uppercase hidden md:table-cell">${getTeam(r.teamId).name}</td>
+                                                <td class="p-4 font-black text-right">${r.points}</td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Recent Race Results -->
+                        <div>
+                            <h2 class="text-2xl font-black uppercase mb-6 border-b-2 border-dark pb-2">Race Results</h2>
+                            <div class="space-y-4">
+                                ${db.results.map(res => {
+                                    const winner = getRider(res.winnerId);
+                                    const second = getRider(res.secondId);
+                                    const third = getRider(res.thirdId);
+                                    return `
+                                        <div class="bg-white border border-gray-200 rounded p-5 shadow-sm">
+                                            <h3 class="text-xl font-black italic uppercase mb-4 text-dark">${res.raceName}</h3>
+                                            <div class="flex items-center gap-4 mb-3 p-2 bg-yellow-50 rounded border border-yellow-200 cursor-pointer hover:bg-yellow-100" onclick="navigate('rider', '${winner.id}')">
+                                                <div class="w-8 h-8 bg-yellow-400 text-yellow-900 rounded-full flex items-center justify-center font-black">1</div>
+                                                <div class="font-bold text-lg">${winner.name}</div>
+                                            </div>
+                                            <div class="grid grid-cols-2 gap-4">
+                                                <div class="flex items-center gap-3 p-2 bg-gray-50 rounded cursor-pointer hover:bg-gray-100" onclick="navigate('rider', '${second.id}')">
+                                                    <div class="w-6 h-6 bg-gray-300 text-gray-700 rounded-full flex items-center justify-center font-bold text-sm">2</div>
+                                                    <div class="font-semibold text-sm">${second.name}</div>
+                                                </div>
+                                                <div class="flex items-center gap-3 p-2 bg-orange-50 rounded cursor-pointer hover:bg-orange-100" onclick="navigate('rider', '${third.id}')">
+                                                    <div class="w-6 h-6 bg-orange-300 text-orange-900 rounded-full flex items-center justify-center font-bold text-sm">3</div>
+                                                    <div class="font-semibold text-sm">${third.name}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `
+                                }).join('')}
+                            </div>
+                        </div>
+                        
+                    </div>
+                `;
+            },
+
+            news: () => {
+                return `
+                    <div class="bg-dark text-white py-12 px-4 border-b-4 border-brand">
+                        <div class="container mx-auto">
+                            <h1 class="text-4xl font-black uppercase italic mb-2">Latest News</h1>
+                            <p class="text-gray-400">Headlines, interviews, and updates from the paddock.</p>
+                        </div>
+                    </div>
+                    <div class="container mx-auto px-4 py-12">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            ${db.news.map(n => `
+                                <div class="bg-white rounded-lg overflow-hidden shadow-sm card-hover cursor-pointer border border-gray-100 flex flex-col">
+                                    <div class="h-56 bg-gray-200 relative">
+                                        <img src="${n.image}" class="w-full h-full object-cover">
+                                        <div class="absolute bottom-0 left-0 bg-brand text-white text-xs font-bold px-3 py-1 uppercase">${n.date}</div>
+                                    </div>
+                                    <div class="p-6 flex-grow flex flex-col">
+                                        <h3 class="font-black text-xl leading-tight mb-3 hover:text-brand transition">${n.title}</h3>
+                                        <p class="text-gray-600 text-sm flex-grow">${n.summary}</p>
+                                        <div class="mt-4 text-brand font-bold text-sm uppercase">Read Article <i class="fa-solid fa-arrow-right ml-1"></i></div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+        };
+
+        // ==========================================
+        // 4. ROUTER / NAVIGATION LOGIC
+        // ==========================================
+        function navigate(viewName, param = null) {
+            const app = document.getElementById('app');
+            window.scrollTo(0, 0); // Scroll to top on navigation
+            
+            if (views[viewName]) {
+                app.innerHTML = views[viewName](param);
+            } else {
+                app.innerHTML = `<div class="container mx-auto py-20 text-center"><h1 class="text-4xl font-black">404 - Not Found</h1></div>`;
+            }
+        }
+
+        // Initialize App
+        navigate('home');
+
+    </script>
+</body>
+</html>
