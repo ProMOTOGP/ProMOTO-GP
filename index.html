@@ -11,6 +11,7 @@
     <!-- Google Fonts (Similar to F1 style) -->
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,400;0,600;0,700;0,900;1,400&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="M GP (1).png">
+    
     <script>
         tailwind.config = {
             theme: {
@@ -173,6 +174,22 @@
         // ==========================================
         // 2. HELPER FUNCTIONS
         // ==========================================
+        // --- VOTING SYSTEM LOGIC ---
+const getVotes = () => {
+    const saved = localStorage.getItem('promoto_votes');
+    return saved ? JSON.parse(saved) : {};
+};
+
+const castVote = (riderId) => {
+    const votes = getVotes();
+    votes[riderId] = (votes[riderId] || 0) + 1;
+    localStorage.setItem('promoto_votes', JSON.stringify(votes));
+    
+    // This refreshes the page so the number updates instantly
+    const activeView = window.currentView || 'home';
+    const activeParam = window.currentParam || null;
+    navigate(activeView, activeParam);
+};
         
         // Find next race
         const getNextRace = () => db.schedule.find(r => r.status === 'upcoming');
@@ -340,66 +357,123 @@
                 `;
             },
 
-            team: (teamId) => {
+           team: (teamId) => {
+
                 const team = getTeam(teamId);
+
                 const teamRiders = db.riders.filter(r => r.teamId === teamId);
+
                 
+
                 return `
+
                     <div class="bg-dark text-white py-12 px-4 border-b-4 border-brand">
+
                         <div class="container mx-auto flex items-center gap-6">
+
                             <img src="${team.logo}" class="h-24 w-24 object-cover rounded bg-white p-1">
+
                             <div>
+
                                 <h1 class="text-4xl font-black uppercase italic mb-2">${team.name}</h1>
+
                                 <div class="flex gap-6 text-sm font-bold text-gray-400">
+
                                     <span><i class="fa-solid fa-motorcycle text-brand"></i> ${team.bike}</span>
+
                                     <span><i class="fa-solid fa-trophy text-brand"></i> ${team.points} PTS</span>
+
                                     <span><i class="fa-solid fa-flag-checkered text-brand"></i> ${team.races} Races</span>
+
                                 </div>
+
                             </div>
+
                         </div>
+
                     </div>
+
                     <div class="container mx-auto px-4 py-12">
+
                         <h2 class="text-2xl font-black uppercase mb-6 border-b border-dark pb-2">Current Riders</h2>
+
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
                             ${teamRiders.map(r => `
+
                                 <div class="bg-white rounded-lg shadow-sm flex overflow-hidden card-hover cursor-pointer border-l-4 ${team.color}" onclick="navigate('rider', '${r.id}')">
+
                                     <div class="w-1/3 bg-gray-200">
+
                                         <img src="${r.image}" class="w-full h-full object-cover">
+
                                     </div>
+
                                     <div class="w-2/3 p-6 flex flex-col justify-center">
+
                                         <div class="flex justify-between items-start">
+
                                             <div>
+
                                                 <div class="text-sm font-bold text-gray-400 uppercase">${r.country}</div>
+
                                                 <h3 class="text-2xl font-black hover:text-brand transition">${r.name}</h3>
+
                                             </div>
+
                                             <div class="text-4xl font-black text-gray-200 italic">${r.number}</div>
+
                                         </div>
+
                                         <div class="mt-4 grid grid-cols-3 gap-2 border-t pt-4 text-center">
+
                                             <div>
+
                                                 <div class="font-black text-xl text-brand">${r.points}</div>
+
                                                 <div class="text-[10px] uppercase text-gray-500 font-bold">Points</div>
+
                                             </div>
+
                                             <div>
+
                                                 <div class="font-black text-xl">${r.wins}</div>
+
                                                 <div class="text-[10px] uppercase text-gray-500 font-bold">Wins</div>
+
                                             </div>
+
                                             <div>
+
                                                 <div class="font-black text-xl">${r.podiums}</div>
+
                                                 <div class="text-[10px] uppercase text-gray-500 font-bold">Podiums</div>
+
                                             </div>
+
                                         </div>
+
                                     </div>
+
                                 </div>
+
                             `).join('')}
+
                         </div>
+
                         <button onclick="navigate('teams')" class="mt-10 text-brand font-bold uppercase hover:underline"><i class="fa-solid fa-arrow-left"></i> Back to Teams</button>
+
                     </div>
+
                 `;
+
             },
+
 
             rider: (riderId) => {
                 const r = getRider(riderId);
                 const team = getTeam(r.teamId);
+                const votes = getVotes(); // Added logic line
                 
                 return `
                     <div class="bg-white border-b-4 border-brand">
@@ -413,6 +487,7 @@
                                     <h1 class="text-5xl font-black uppercase italic mb-2">${r.name}</h1>
                                     <p class="text-xl font-bold text-gray-500 uppercase cursor-pointer hover:text-brand" onclick="navigate('team', '${team.id}')">${team.name}</p>
                                 </div>
+                                
                                 <div class="flex flex-wrap justify-center md:justify-start gap-4 mt-8 relative z-10">
                                     <div class="bg-dark text-white px-6 py-4 rounded shadow-md text-center min-w-[120px]">
                                         <div class="text-3xl font-black text-brand">${r.points}</div>
@@ -431,6 +506,17 @@
                                         <div class="text-xs uppercase tracking-widest text-gray-500 mt-1">Fastest Laps</div>
                                     </div>
                                 </div>
+
+                                <div class="mt-8 p-6 bg-gray-50 border-l-4 border-brand shadow-inner flex items-center justify-between relative z-10">
+                                    <div>
+                                        <div class="text-xs font-bold text-gray-400 uppercase tracking-widest">Fan Support</div>
+                                        <div class="text-4xl font-black text-dark">${votes[r.id] || 0} <span class="text-sm font-normal text-gray-500">Votes</span></div>
+                                    </div>
+                                    <button onclick="castVote('${r.id}')" class="bg-brand text-white px-8 py-3 font-black uppercase italic hover:bg-dark transition-all transform hover:scale-105 shadow-lg">
+                                        Vote for ${r.name.split(' ')[0]}
+                                    </button>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -584,16 +670,21 @@
         // ==========================================
         // 4. ROUTER / NAVIGATION LOGIC
         // ==========================================
+        
         function navigate(viewName, param = null) {
-            const app = document.getElementById('app');
-            window.scrollTo(0, 0); // Scroll to top on navigation
-            
-            if (views[viewName]) {
-                app.innerHTML = views[viewName](param);
-            } else {
-                app.innerHTML = `<div class="container mx-auto py-20 text-center"><h1 class="text-4xl font-black">404 - Not Found</h1></div>`;
-            }
-        }
+    // These two lines are new
+    window.currentView = viewName;
+    window.currentParam = param;
+
+    const app = document.getElementById('app');
+    window.scrollTo(0, 0); 
+    
+    if (views[viewName]) {
+        app.innerHTML = views[viewName](param);
+    } else {
+        app.innerHTML = `<div class="container mx-auto py-20 text-center"><h1 class="text-4xl font-black">404 - Not Found</h1></div>`;
+    }
+}
 
         // Initialize App
         navigate('home');
